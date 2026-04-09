@@ -4,12 +4,14 @@ import { Repository } from "../interfaces/Repository";
 
 export class NotesServiceImpl implements NotesService {
     private repository: Repository;
+    private NOTES_KEY: string;
 
     constructor(paramRepository: Repository) {
         this.repository = paramRepository;
+        this.NOTES_KEY = 'NIKO_NOTES_KEY';
     }
 
-    createNote(paramId: string, paramValues: Record<string, Note>): boolean {
+    createNote(paramId: string, paramValues: Note): boolean {
         this.repository.setItem(paramId, paramValues);
         return true; //TODO: Check this.
     }
