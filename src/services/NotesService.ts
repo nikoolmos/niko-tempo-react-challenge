@@ -25,7 +25,7 @@ export class NotesServiceImpl implements NotesService {
     }
 
     readNote(paramId: string): { id: string; value: Note; } {
-        const result = this.repository.getItem(paramId);
+        const { value: result } = this.repository.getItem(paramId);
 
         const myNote: Note = {
             color: result.color,

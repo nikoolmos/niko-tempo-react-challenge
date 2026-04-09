@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { UseNoteHook } from "../interfaces/UseNoteHook";
 import { NotesServiceImpl as NotesService } from "../services/NotesService";
 import { LocalStorageRepositoryImpl } from "../repositories/LocalStorageRepository";
@@ -20,25 +20,29 @@ export const useNote: UseNoteHook = (paramId: string) => {
     const service = useRef(NoteServiceFactory.build());
     // TODO: check this logic and use case.
     const [error, setError] = useState(false);
+    const [note, setNote] = useState<Note>();
+    const [retrieveNote, setRetrieveNote] = useState<boolean>(false);
 
-
-    const note = useMemo(() => {
+     useEffect(() => {
         const result = service.current.readNote(paramId);
 
         // TODO: check this logic and use case.
         if (!result.value) {
             setError(true);
         }
-        return result.value;
-    }, [paramId]);
+
+        setNote(result.value);
+
+    }, [paramId, retrieveNote]);
 
     const updateNote = useCallback((value: Note) => {
         service.current.updateNote(paramId, value);
-    }, [paramId]);
+        setRetrieveNote(!retrieveNote)
+    }, [paramId, setRetrieveNote, retrieveNote]);
 
 
     return {
-        id: note.id,
+        id: note?.id,
         note,
         updateNote
     }
