@@ -44,12 +44,22 @@ export class NoteListServiceImpl implements NoteListService {
     }
 
     removeNote(paramId: string): string {
+        this.noteService.deleteNote(paramId);
 
-        // TODO: implement this feature.
+        const noteList = this.getNoteList();
+
+        const newList = noteList.filter(id => id !== paramId);
+
+        this.repository.setItem(this.NOTE_LIST_ID, { idList: newList });
+
         return paramId;
     }
 
     init() {
-        this.repository.setItem(this.NOTE_LIST_ID, { idList: []});
+        try {
+            this.getNoteList()
+        } catch {
+            this.repository.setItem(this.NOTE_LIST_ID, { idList: [] });
+        }
     }
 }

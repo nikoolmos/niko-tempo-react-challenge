@@ -17,7 +17,9 @@ export class NotesServiceImpl implements NotesService {
     }
 
     deleteNote(paramId: string): boolean {
-        throw new Error("FEATURE NOT IMPLEMENTED");
+        this.repository.removeItem(paramId);
+
+        return true;
     }
 
     readAllNotes(): Array<{ id: string; value: Note; }> {

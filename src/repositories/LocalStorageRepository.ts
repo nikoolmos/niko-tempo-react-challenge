@@ -27,4 +27,12 @@ export class LocalStorageRepositoryImpl implements LocalStorageRepository {
             throw new Error("LocalStorage is not available.");
         }
     }
+
+    removeItem(paramId: string): boolean {
+        this.checkIfLocalStorageIsAvailable();
+
+        globalThis.localStorage.removeItem(paramId);
+
+        return true;
+    }
 }

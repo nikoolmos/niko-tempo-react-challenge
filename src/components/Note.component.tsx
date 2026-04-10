@@ -1,15 +1,18 @@
 import React from "react";
 import { useNote } from "../hooks/useNote";
+import { ColorConverter } from "../utils/ColorConventer";
+import { Colors } from "../interfaces/colors";
 
 interface NoteProps {
     id: string;
+    selectedColor: Colors
 }
 
 export const Note: React.FC<NoteProps> = (props: NoteProps) => {
 
     const { id, note, updateNote } = useNote(props.id);
 
-    if(!note) {
+    if (!note) {
         return null;
     }
 
@@ -27,7 +30,7 @@ export const Note: React.FC<NoteProps> = (props: NoteProps) => {
     }
 
     const handlePositionChange = (newX: number, newY: number) => {
-        if(note) {
+        if (note) {
             updateNote({
                 ...note,
                 position: {
@@ -39,19 +42,27 @@ export const Note: React.FC<NoteProps> = (props: NoteProps) => {
         }
     }
 
-    const handleDragOn = (event) => {
-        console.info('DRAG ON EVENT', event);
+    const handleDragStart = (event: any) => {
+        event.dataTransfer.setData("id", id);
     }
 
-    const handleDragEnd = (event) => {
+    const handleDragEnd = (event: any) => {
         console.info('DRAG END EVENT', event);
         handlePositionChange(event.pageX, event.pageY);
     }
 
+    const handleSetColor = () => {
+        if (note) {
+            updateNote({
+                ...note,
+                color: props.selectedColor
+            });
+        }
+    }
 
     const styles = {
         display: 'inline-block',
-        backgroundColor: 'tomato',
+        backgroundColor: ColorConverter.fromEnum(note.color),
         borderStyle: 'solid',
         borderWidth: '1px',
         borderColor: 'black',
@@ -64,13 +75,13 @@ export const Note: React.FC<NoteProps> = (props: NoteProps) => {
 
     const textAreaStyles = {
         backgroundColor: 'transparent',
-        border:'none',
+        border: 'none',
         outline: 'none'
     }
 
     return (
-        <section draggable={true} style={styles} onDrag={handleDragOn} onDragEnd={handleDragEnd}>
-            <textarea style={textAreaStyles}  onChange={handleContentChange}></textarea>
+        <section onClick={handleSetColor} draggable={true} style={styles} onDragStart={handleDragStart} onDragEnd={handleDragEnd} >
+            <textarea style={textAreaStyles} value={note.content} onChange={handleContentChange}></textarea>
         </section >
     );
 }
