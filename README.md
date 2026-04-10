@@ -38,4 +38,8 @@ I also decided to use a design pattern called **Factory Pattern** to make code m
 
 Due to the lack of time I decide to send the challenge as it is, since "it's better done than perfect".
 
+## Example
+
+<img width="1919" height="909" alt="image" src="https://github.com/user-attachments/assets/b78eae44-d7ce-42e5-8851-1202cef275f9" />
+
 
